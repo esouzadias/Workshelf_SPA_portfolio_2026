@@ -1,0 +1,305 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  profile      Profile?
+  passwordResetTokens PasswordResetToken[]
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  tokenHash String   @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([userId, expiresAt])
+}
+
+model Profile {
+  id          String  @id @default(cuid())
+  user        User    @relation(fields: [userId], references: [id])
+  userId      String  @unique
+  displayName String
+  theme       String  @default("system")
+  locale      String  @default("en")
+  avatarUrl   String?
+  skills      Skill[]
+  reviews     Review[]
+
+  // Basic Info
+  fullName    String?
+  birthDate   DateTime?
+  nationality String?
+  gender      Gender?
+
+  // Work Info
+  employmentStatus      EmploymentStatus?
+  currentTitle          String? // ex: "Frontend Engineer"
+  currentCompany        String?
+  currentCompanyLogoUrl String?
+  currentClient         String?
+  currentClientLogoUrl  String?
+  currentRoleStart      DateTime?
+
+  // Other Info
+  maritalStatus MaritalStatus?
+  dependents    Int?
+
+  hobbies        Hobby[]
+  certifications Certification[]
+
+  experiences Experience[]
+  languages   Language[]
+  contacts    ContactMethod[]
+
+  about String?
+
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  Education Education[]
+}
+
+model Hobby {
+  id          String  @id @default(cuid())
+  name        String
+  description String?
+  icon        String?
+  profile     Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId   String
+
+  @@unique([profileId, name]) // avoid duplicates in the same profile
+}
+
+model Education {
+  id        String  @id @default(cuid())
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId String
+
+  education     String? // e.g. "Computer Science", "Software Engineering"
+  school        String
+  schoolLogoUrl String?
+  degree        String? // e.g. "BSc", "MSc"
+
+  startDate DateTime
+  endDate   DateTime?
+  isCurrent Boolean   @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([profileId, startDate])
+  @@index([profileId, isCurrent, endDate])
+}
+
+enum MaritalStatus {
+  single
+  married
+  divorced
+  widowed
+  civil_union
+  other
+}
+
+enum Gender {
+  male
+  female
+  other
+}
+
+enum EmploymentStatus {
+  employed
+  unemployed
+  freelance
+  student
+}
+
+enum DashboardTabKey {
+  overview
+  portfolio
+  contacts
+}
+
+model DashboardTab {
+  id    String          @id @default(cuid())
+  key   DashboardTabKey
+  label String
+  icon  String?
+  order Int             @default(0)
+  tiles DashboardTile[]
+
+  @@unique([key])
+}
+
+model DashboardTile {
+  id          String       @id @default(cuid())
+  category    String
+  description String
+  icon        String?
+  order       Int          @default(0)
+  tab         DashboardTab @relation(fields: [tabId], references: [id], onDelete: Cascade)
+  tabId       String
+}
+
+model Certification {
+  id        String   @id @default(cuid())
+  title     String
+  fileName  String
+  mimeType  String   @default("application/pdf")
+  url       String
+  profile   Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId String
+  createdAt DateTime @default(now())
+
+  badgeColor String? // hex like #5B9BFF
+  iconUrl    String?
+
+  @@index([profileId, createdAt])
+}
+
+model Review {
+  id             String @id @default(cuid())
+  profileId      String 
+  profile        Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  companyName    String
+  companyLogoUrl String?
+  fileName       String
+  description    String @default("")
+  url            String
+  mimeType       String @default("application/pdf")
+  createdAt      DateTime @default(now())
+  reviewDate           DateTime
+  @@index([profileId, reviewDate])
+}
+
+model Experience {
+  id        String  @id @default(cuid())
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId String
+
+  title   String
+  company String
+
+  companyLogoUrl String?
+
+  isConsultancy Boolean @default(false)
+
+  client        String?
+  clientLogoUrl String?
+
+  startDate DateTime
+  endDate   DateTime?
+  isCurrent Boolean   @default(false)
+
+  description String?
+
+  tasks     ExperienceTask[]
+  techLinks ExperienceTechnology[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ExperienceTask {
+  id           String     @id @default(cuid())
+  experience   Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+  experienceId String
+  text         String
+  order        Int        @default(0)
+}
+
+model Technology {
+  id      String                 @id @default(cuid())
+  name    String                 @unique
+  iconUrl String?
+  usages  ExperienceTechnology[]
+}
+
+model ExperienceTechnology {
+  experience   Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+  experienceId String
+  technology   Technology @relation(fields: [technologyId], references: [id], onDelete: Cascade)
+  technologyId String
+
+  @@id([experienceId, technologyId])
+}
+
+model Skill {
+  id          String  @id @default(cuid())
+  name        String
+  proficiency Int     @default(50) // 0-100 percentage
+  icon        String?
+  order       Int     @default(0)
+
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([profileId, name]) // avoid duplicates in same profile
+}
+
+model Language {
+  id        String        @id @default(cuid())
+  profile   Profile       @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId String
+  name      String
+  level     LanguageLevel
+  isNative  Boolean       @default(false)
+
+  @@unique([profileId, name])
+}
+
+enum LanguageLevel {
+  A1
+  A2
+  B1
+  B2
+  C1
+  C2
+  beginner
+  intermediate
+  advanced
+  fluent
+  native_like
+}
+
+model ContactMethod {
+  id        String      @id @default(cuid())
+  profile   Profile     @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId String
+  type      ContactType
+  label     String?
+  value     String
+  icon      String?
+  order     Int         @default(0)
+}
+
+enum ContactType {
+  email
+  phone
+  website
+  linkedin
+  github
+  twitter
+  instagram
+  other
+}

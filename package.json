@@ -1,0 +1,14 @@
+{
+  "name": "workshelf",
+  "private": true,
+  "scripts": {
+    "start": "BROWSER=edge concurrently -k -c green,cyan,magenta \"npm --prefix apps/api run dev\" \"npm --prefix apps/web run dev\"",
+    "api": "npm --prefix apps/api run dev",
+    "web": "npm --prefix apps/web run dev"
+    
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0",
+    "wait-on": "^7.0.1"
+  }
+}

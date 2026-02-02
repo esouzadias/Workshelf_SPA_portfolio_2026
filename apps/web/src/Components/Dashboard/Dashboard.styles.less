@@ -1,0 +1,66 @@
+@import "../../styles/global.styles.less";
+
+#dashboard {
+  width: fit-content; 
+  display: flex;
+  gap: 16px;
+  align-items: stretch;
+  padding: 16px;
+  border-radius: var(--radius-xl);
+  background: linear-gradient(180deg, rgba(var(--glassTint), .10), rgba(var(--glassTint), .06));
+  border: 1px solid rgba(var(--glassTint), .12);
+  box-shadow: var(--elev-1);
+
+  #sidebar {
+    min-width: 290px;
+    align-self: stretch;
+  }
+
+  .dash-content {
+    flex: 1 1 auto;
+    width: 100%;
+    display: block;
+
+    .tile-grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(3, minmax(240px, 1fr));
+      height: 100%;
+    }
+  }
+
+  @media (max-width: 1200px) {
+    .dash-content .tile-grid {
+      grid-template-columns: repeat(2, minmax(240px, 1fr));
+    }
+  }
+
+  @media (max-width: 720px) {
+    flex-direction: column;
+
+    #sidebar {
+      flex: none;
+      min-width: 0;
+    }
+
+    .dash-content .tile-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .fade-slide {
+    animation: fs 0.35s ease both;
+  }
+
+  @keyframes fs {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

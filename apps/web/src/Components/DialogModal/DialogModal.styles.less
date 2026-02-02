@@ -1,0 +1,105 @@
+@import '../../styles/global.styles.less';
+
+/* Bouncy dialog entrance (no fade) */
+.qprofile__dialog.qprofile__dialog--spring {
+  .surface();
+
+  /* More colorful glass */
+  background:
+    radial-gradient(900px circle at 18% 8%, rgba(99,102,241,.18), transparent 55%),
+    radial-gradient(820px circle at 86% 28%, rgba(236,72,153,.14), transparent 58%),
+    radial-gradient(720px circle at 55% 96%, rgba(34,211,238,.12), transparent 56%),
+    linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.015)) !important;
+
+  border: 1px solid rgba(255,255,255,.12) !important;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.06) inset,
+    0 18px 60px rgba(0,0,0,.40),
+    0 0 24px rgba(99,102,241,.12);
+
+  border-radius: var(--radius-xl) !important;
+  overflow: hidden;
+  animation: spring-in 280ms cubic-bezier(.18,.9,.22,1.2);
+
+  /* Make the dialog itself scroll when content is taller than the viewport */
+  max-height: calc(100dvh - 48px) !important;
+  display: flex;
+  flex-direction: column;
+
+  /* Inner sheen + color bloom */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -10px;
+    pointer-events: none;
+    background:
+      radial-gradient(1000px circle at 22% 10%, rgba(99,102,241,.16), transparent 58%),
+      radial-gradient(820px circle at 88% 32%, rgba(236,72,153,.12), transparent 60%),
+      radial-gradient(760px circle at 58% 96%, rgba(34,211,238,.10), transparent 56%);
+    opacity: 0.9;
+    filter: saturate(1.15);
+    transform: translateZ(0);
+  }
+
+  /* Subtle top gloss + fine grain */
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.14), transparent 26%),
+      radial-gradient(900px circle at 50% -10%, rgba(255,255,255,.08), transparent 55%);
+    opacity: 0.7;
+  }
+
+  #qprofile {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    height: 100%;
+  }
+}
+
+@keyframes spring-in {
+  0%   { transform: translateY(14px) scale(.96); opacity: 1; }
+  55%  { transform: translateY(-6px) scale(1.02); }
+  100% { transform: translateY(0)    scale(1); }
+}
+
+#qprofile { color: var(--primary); }
+
+/* Header */
+.qprofile__titlebar {
+  position: relative;
+  padding: 12px 48px 10px 12px;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+  /* background:
+    linear-gradient(180deg, rgba(0,0,0,.10), transparent 70%); */
+  flex: 0 0 auto;
+}
+
+.qprofile__header { display: flex; align-items: center; gap: 12px; }
+.qprofile__title { font-weight: 800 !important; line-height: 1.1 !important; }
+
+/* Important: let the DialogContent be the scroll container */
+.qprofile__content {
+  padding: 8px 12px 12px 12px !important;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto !important;
+
+  /* A bit of inner depth to feel "glass" */
+  /* background:
+    radial-gradient(900px circle at 10% 0%, rgba(255,255,255,.05), transparent 45%),
+    radial-gradient(900px circle at 90% 30%, rgba(255,255,255,.03), transparent 50%); */
+}
+
+.qprofile__close { color: var(--primary) !important; }
+
+h2 { color: var(--primary) !important; }

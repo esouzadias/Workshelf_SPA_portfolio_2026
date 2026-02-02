@@ -1,0 +1,109 @@
+@import '../../../../styles/global.styles.less';
+
+/* Bouncy dialog entrance (no fade) */
+.qprofile__dialog.qprofile__dialog--spring {
+  .surface();
+  border-radius: var(--radius-xl) !important;
+  overflow: hidden;
+  animation: spring-in 280ms cubic-bezier(.18,.9,.22,1.2);
+}
+@keyframes spring-in {
+  0%   { transform: translateY(14px) scale(.96); opacity: 1; }
+  55%  { transform: translateY(-6px) scale(1.02); }
+  100% { transform: translateY(0)    scale(1); }
+}
+
+#qprofile { color: var(--primary); }
+
+/* Header */
+.qprofile__titlebar { position: relative; padding: 12px 48px 10px 12px; border-bottom: 1px solid color-mix(in srgb, var(--third) 85%, transparent); }
+.qprofile__header { display: flex; align-items: center; gap: 12px; }
+.qprofile__avatar { width: 40px !important; height: 40px !important; border-radius: var(--radius-md); box-shadow: var(--boxShadow); }
+.qprofile__titleGroup { display: flex; flex-direction: column; gap: 6px; }
+.qprofile__title { font-weight: 800 !important; line-height: 1.1 !important; }
+.qprofile__role  { opacity: .9; font-weight: 600; }
+
+/* Meta row under role */
+.qprofile__metaRow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+// .qprofile__pill {
+//   font-weight: 500 !important;
+//   color: #a7ffca !important;
+//   background: color-mix(in srgb, #22c55e 30%, transparent) !important;
+//   border: 1px solid color-mix(in srgb, #22c55e 50%, transparent) !important;
+// }
+
+.qprofile__orgLine { display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; }
+.qprofile__orgLine .sep { opacity: .6; }
+.qprofile__orgLine .muted { opacity: .7; }
+
+.qprofile__orgInline {
+  display: inline-flex; align-items: center; gap: 6px;
+  strong { font-weight: 700; }
+  img { width: 18px; height: 18px; border-radius: 6px; object-fit: cover; box-shadow: var(--boxShadow); }
+  .fallback {
+    width: 18px; height: 18px; display: grid; place-items: center;
+    border-radius: 6px; font-size: 10px; font-weight: 800;
+    background: color-mix(in srgb, var(--third) 86%, transparent);
+    border: 1px solid color-mix(in srgb, var(--third) 80%, transparent);
+  }
+}
+.qprofile__age { opacity: .8; font-size: 12.5px; }
+
+.qprofile__close {
+  position: absolute !important; right: 8px; top: 8px;
+  color: var(--primary) !important;
+  background: color-mix(in srgb, var(--third) 86%, transparent) !important;
+  border: 1px solid color-mix(in srgb, var(--third) 78%, transparent) !important;
+  transition: transform .16s cubic-bezier(.2,.9,.25,1.2);
+  &:hover { transform: scale(1.06); }
+}
+
+/* Tabs */
+.qprofile__tabs { margin-bottom: 10px; }
+.qprofile__tab {
+  text-transform: none !important;
+  font-weight: 600 !important;
+  min-height: 36px !important;
+  border-radius: var(--radius-md) !important;
+  color: var(--primary) !important;
+  &:hover { background: color-mix(in srgb, var(--third) 90%, transparent); }
+}
+/* Selected tab gets glass-like surface */
+.qprofile__tab.Mui-selected {
+  /* .glass-surface(); */
+  background-color: var(--bgSecondary) !important;
+  border-radius: var(--borderRadiusRound) !important;
+}
+.MuiTabs-indicator { background: var(--linkColor) !important; height: 2px; border-radius: 2px; }
+
+/* Panels: bouncy slide, no fade */
+.qprofile__panel { display: none; }
+.qprofile__panel.is-active {
+  display: block;
+  animation: panel-spring 260ms cubic-bezier(.18,.9,.22,1.2);
+}
+@keyframes panel-spring {
+  0%   { transform: translateY(10px) scale(.992); opacity: 1; }
+  55%  { transform: translateY(-4px) scale(1.008); }
+  100% { transform: translateY(0)    scale(1); }
+}
+
+/* Sections/Fields */
+.qprofile__section { .surface(); border-radius: var(--radius-lg); padding: 16px; box-shadow: none !important; }
+.qprofile__sectionTitle { font-weight: 800 !important; margin-bottom: 8px; }
+.qprofile__fields { margin-top: 6px; }
+.qprofile__field {
+  display: grid; grid-template-columns: 1fr auto; align-items: center;
+  gap: 12px; padding: 6px 0;
+  border-bottom: 1px dashed color-mix(in srgb, var(--third) 75%, transparent);
+  &:last-child { border-bottom: 0; }
+  span { opacity: .75; }
+  strong { font-weight: 800; }
+}
+
+#qprofile_school{
+  display: flex; align-items: center; gap: 6px; justify-content: space-between;
+}
+
+.qprofile__content { padding: 8px 12px 12px 12px !important; }

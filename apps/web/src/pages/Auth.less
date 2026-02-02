@@ -1,0 +1,103 @@
+@import "../styles/global.styles.less";
+
+.auth-shell {
+  display: grid;
+  place-items: center;
+}
+
+.auth-card {
+  width: 100%;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.035);
+  box-shadow: 0 0 24px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 18px;
+}
+
+.auth-head {
+  display: grid;
+  gap: 12px;
+}
+
+.auth-title h2 {
+  font-weight: 950;
+  letter-spacing: 0.2px;
+}
+
+/* Tabs (scoped ao auth, para não levar override do global) */
+.auth-card {
+  .tabs {
+    display: flex;
+    gap: 6px;
+    background: var(--bgPrimary);
+    padding: 6px;
+    border-radius: 999px;
+    width: 100%;
+
+    .tab {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 10px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 900;
+      letter-spacing: 0.2px;
+      color: var(--primary);
+      opacity: 0.45;
+      transition: opacity @transitionDuration ease, background @transitionDuration ease, color @transitionDuration ease;
+
+      &:hover {
+        opacity: 0.9;
+      }
+
+      &.active {
+        opacity: 1;
+        color: var(--linkColor);
+        background: color-mix(in srgb, var(--linkColor) 100%, transparent);
+        box-shadow: 0 1px 10px rgba(0, 0, 0, 0.12);
+      }
+    }
+  }
+}
+
+.form-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.auth-msg {
+  margin: 0;
+  font-weight: 800;
+  font-size: 13px;
+  line-height: 1.35;
+  white-space: pre-wrap;
+}
+
+.auth-msg--err {
+  color: #ff6b6b;
+}
+
+.auth-msg--ok {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.link-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  color: var(--linkColor);
+  font-weight: 900;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  opacity: 0.9;
+  justify-self: start;
+
+  &:hover {
+    opacity: 1;
+  }
+}

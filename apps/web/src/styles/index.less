@@ -1,0 +1,422 @@
+@import "./global.styles.less";
+
+/* ===========================
+   BASE / RESETS
+   =========================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html{
+  height: 100%;
+}
+
+html,
+body,
+#root {
+  overflow: hidden;
+}
+
+#root{
+  max-width: 1100px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+body {
+  margin: 0;
+  font-family: @font-family;
+  color: var(--primary);
+  /* Canvas global (controlado por theme tokens) */
+  background: var(--bgCanvas);
+  transition-duration: @transitionDuration;
+  padding: 20px;
+  width: 100%;
+  // height: 100vw;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* grãozinho suave para “glass vibe” */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+  repeating-linear-gradient(0deg, rgba(255, 255, 255, .015) 0 2px, transparent 2px 4px),
+  repeating-linear-gradient(90deg, rgba(0, 0, 0, .012) 0 2px, transparent 2px 4px);
+  mix-blend-mode: soft-light;
+  opacity: .55;
+  transition-duration: @transitionDuration;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+/* ===========================
+   TYPO & LINKS
+   =========================== */
+
+a {
+  color: var(--linkColor);
+  text-decoration: none;
+}
+
+.link {
+  color: var(--linkColor);
+  transition-duration: 2s;
+
+  &:hover {
+    cursor: pointer;
+    opacity: 0.5;
+    transition-duration: 2s;
+  }
+}
+
+p {
+  color: var(--primary);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--forth);
+  margin: 0;
+}
+
+.brand {
+  font-weight: 800;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+/* helpers */
+.card {
+  .card();
+}
+
+.form-grid {
+  display: grid;
+  gap: 12px;
+}
+
+/* ===========================
+   FORM CONTROLS
+   =========================== */
+
+.input {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid var(--bgPrimary);
+  border-radius: 10px;
+  outline: none;
+  background-color: var(--bgPrimary);
+  color: var(--primary);
+
+  &::placeholder {
+    color: var(--primary);
+    opacity: 0.5;
+  }
+
+  transition: border-color @transitionDuration ease;
+
+  &:focus {
+    border-color: var(--linkColor);
+  }
+
+  &[disabled] {
+    background-color: transparent;
+    opacity: 0.5;
+  }
+}
+
+select[disabled], .input[disabled] {
+  appearance: none;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-indent: 1px;
+  text-overflow: '';
+}
+
+::-ms-reveal {
+  filter: invert(100%);
+  .link();
+}
+
+::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+.tabs {
+      display: flex;
+      gap: 6px;
+      background: var(--bgPrimary);
+      padding: 4px;
+      border-radius: @BorderRadiusRounder !important;
+      width: 100% !important;
+      .tab, button {
+        border: none;
+        background: transparent;
+        padding: 8px 14px;
+        cursor: pointer;
+        font-weight: 600;
+        opacity: 1;
+        transition-duration: @transitionDuration;
+        color: var(--primary) !important;
+        &:not(.active){
+          opacity: 0.2;
+        }
+        &:hover:not(.active) { // change on hover unless it's active
+          transition-duration: @transitionDuration;
+        }
+        &.Mui-selected {
+          color: var(--linkColor) !important;
+          opacity: 1 !important;
+        }
+      }
+    }
+    &.MuiTabs-indicator{
+      border-bottom: 2px solid var(--linkColor) !important;
+    }
+
+textarea {
+  resize: none;
+}
+
+.btn {
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  background: var(--linkColor);
+  color: var(--secondary);
+  border: 1px solid var(--linkColor);
+  transition: opacity @transitionDuration ease;
+
+  &:hover {
+    opacity: .75;
+  }
+}
+
+.btn.ghost {
+  background: var(--linkColor);
+  color: var(--secondary);
+  font-weight: bold;
+  border-radius: @BorderRadiusRound;
+  transition: opacity @transitionDuration ease;
+}
+
+.btn.link {
+  background: transparent;
+  color: var(--linkColor);
+  border: none;
+  padding: 0;
+}
+
+.btn.ghost.outline {
+  background-color: transparent;
+  border: 1px solid var(--linkColor);
+  color: var(--linkColor);
+}
+
+.MuiButton-contained {
+  background-color: var(--linkColor) !important;
+  color: var(--primary) !important;
+}
+
+.btn[disabled] {
+  opacity: 0.3;
+}
+
+/* ===========================
+   NAVBAR (usa bgTertiary)
+   =========================== */
+
+.container {
+/*   max-width: 960px; */
+  margin: 0 auto;
+  width: 100%;
+  /* padding: 24px; */
+
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 12px;
+    border-radius: var(--radius-lg);
+    background: var(--bgTertiary);
+    color: var(--primary);
+    border: 1px solid color-mix(in srgb, var(--bgTertiary) 85%, transparent);
+    box-shadow: var(--boxShadow);
+
+    #logo-container .health-btn {
+      opacity: .4;
+      display: flex;
+      align-items: center;
+      transition: opacity .3s ease;
+
+      &:hover {
+        opacity: 1;
+      }
+
+      .health-btn-icon {
+        color: var(--primary);
+      }
+    }
+
+    .lang-wrap {
+      position: relative;
+    }
+
+    .lang-pop {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 8px);
+      background: var(--bgSecondary);
+      color: var(--primary);
+      border: 1px solid var(--bgSecondary);
+      box-shadow: var(--boxShadow);
+      border-radius: 12px;
+      padding: 6px;
+      width: 160px;
+      z-index: 40;
+      margin-top: 10px;
+      .animatedPop();
+
+      .menu-item {
+        color: var(--primary);
+        width: 100%;
+        text-align: left;
+        border: none;
+        background: transparent;
+        padding: 8px 10px;
+        border-radius: 8px;
+        cursor: pointer;
+
+        &:hover {
+          background: var(--bgPrimary);
+        }
+      }
+    }
+
+    .icon-btn {
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
+      transition: transform .2s ease, color .2s ease;
+      color: var(--primary);
+
+      &:hover {
+        transform: rotate(180deg);
+        color: var(--linkColor);
+      }
+    }
+
+    .avatar-wrap {
+      position: relative;
+
+      .avatar-btn {
+        border: 2px solid transparent;
+        background: transparent;
+        padding: 0;
+        margin: 0;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: inline-grid;
+        place-items: center;
+        overflow: hidden;
+        transition: border-color .2s ease, box-shadow .2s ease;
+
+        img {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          object-fit: cover;
+          display: block;
+        }
+
+        &:hover {
+          border-color: var(--linkColor);
+        }
+
+        &.is-open {
+          border-color: var(--linkColor);
+          box-shadow: 0 0 0 3px color-mix(in srgb, var(--linkColor) 20%, transparent);
+        }
+      }
+
+      .avatar-pop {
+        position: absolute;
+        right: 0;
+        top: calc(100% + 10px);
+        background: var(--bgSecondary);
+        color: var(--primary);
+        border: 1px solid var(--bgSecondary);
+        box-shadow: var(--boxShadow);
+        border-radius: 14px;
+        padding: 14px;
+        width: 260px;
+        z-index: 40;
+        margin-top: 10px;
+        .animatedPop();
+
+        #user-info {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          justify-content: center;
+
+          .avatar-lg {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid var(--bgPrimary);
+            margin-bottom: 10px;
+          }
+
+          .user-lines {
+            margin-bottom: 12px;
+
+            .name {
+              font-weight: 700;
+            }
+
+            .email {
+              opacity: .8;
+              font-size: 13px;
+            }
+          }
+        }
+
+        .actions {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          justify-content: center;
+        }
+      }
+    }
+  }
+}

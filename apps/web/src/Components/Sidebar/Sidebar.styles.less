@@ -1,0 +1,38 @@
+@import '../../styles/global.styles.less';
+
+#sidebar-main {
+  height: 100%;
+
+  .sidebar {
+    background-color: var(--third) !important;
+    .glass-surface();
+    border-radius: var(--radius-xl) !important;
+    padding: 18px;
+    min-height: 100%;
+    height: auto;
+    overflow: clip;
+
+    .sidebar-header {
+      position: relative;
+      border-radius: var(--radius-lg);
+      padding-bottom: 6px;
+      text-align: center;
+
+      &:after {
+        content: "";
+        display: block;
+        height: 1px;
+        margin-top: 10px;
+        background: linear-gradient(90deg, transparent, var(--stroke), transparent);
+        opacity: .6;
+      }
+
+      .name { font-weight: 800; color: var(--linkColor); }
+    }
+
+    .divider { margin: 8px 0 4px; color: white; }
+  }
+
+  .sticky { position: sticky; top: 16px; }
+  .vtabs { padding: 8px 6px; }
+}

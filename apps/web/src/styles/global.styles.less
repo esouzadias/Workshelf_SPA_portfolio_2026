@@ -1,0 +1,227 @@
+/* =========================================
+   GLOBAL TOKENS & MIXINS  (3 cores canónicas)
+   ========================================= */
+
+/* -------- LESS helpers -------- */
+@font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+  "Helvetica Neue", Arial, sans-serif;
+
+@BorderRadiusRound: 8px;
+@BorderRadiusRounder: 14px;
+@BorderRadiusRoundest: 24px;
+@transitionDuration: 0.4s;
+
+/* -------- CSS base shared -------- */
+:root {
+  /* radii & elevation */
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+
+  --blur-weak: 10px;
+  --elev-1: 0 10px 24px rgba(0, 0, 0, .06);
+  --elev-2: 0 18px 44px rgba(0, 0, 0, .10);
+
+  /* glass internals */
+  --strokeAlpha: .14;
+  --shineAlpha: .35;
+
+  /* link default (ajustado em cada tema) */
+  --linkColor: #6366f1;
+  --boxShadow: 0 8px 20px rgba(0, 0, 0, .06);
+
+  --borderRadiousRoundest: @BorderRadiusRoundest;
+  --borderRadiusRounder: @BorderRadiusRounder;
+  --borderRadiusRound: @BorderRadiusRound;
+
+  --glass-border: rgba(255,255,255,.14);
+  --glass-bg-1: rgba(255,255,255,.08);
+  --glass-bg-2: rgba(255,255,255,.02);
+  --glass-gloss: linear-gradient(180deg, rgba(255,255,255,.22), transparent 35%);
+}
+
+/* ==========THEME – LIGHT============== */
+:root[data-theme="light"] {
+  --primary: #0b1020;
+  /* texto */
+  --secondary: #ffffff;
+  /* base / canvas sólido */
+  --third: #ffffff;
+
+  --forth: #6366f1;
+  /* NAV + TILES + SIDEBAR + CARDS */
+
+  --bgPrimary: #e4e5ff;
+  /* fundo geral (body) */
+  --bgSecondary: #ffffff;
+  /* superfícies secundárias (cards, modais) */
+
+  /* canvas com glow/gradiente para o “glass” aparecer */
+  --bgCanvas:
+    radial-gradient(1200px 600px at 18% -10%, rgba(99, 102, 241, .10), transparent 60%),
+    radial-gradient(900px 500px at 110% 0%, rgba(20, 27, 65, .06), transparent 60%),
+    linear-gradient(180deg, #c4cdf2 0%, #eef2f9 100%);
+
+  /* links/botões */
+  --linkColor: #6366f1;
+
+  /* glass params */
+  --glassTint: 255, 255, 255;
+  --stroke: rgba(99, 102, 241, var(--strokeAlpha));
+  --shine: rgba(255, 255, 255, var(--shineAlpha));
+
+  --boxShadow: 0 8px 20px rgba(0, 0, 0, .06);
+
+  .qprofile__pill {
+    font-weight: 800 !important;
+    color: color-mix(in srgb, #12664d 80%, transparent) !important;
+    background: #a7ffca !important;
+    /* green tint */
+    border: 1px solid color-mix(in srgb, #22c55e 50%, transparent) !important;
+  }
+}
+
+/* ==========THEME – DARK===============*/
+:root[data-theme="dark"] {
+  --primary: #ffffff;
+  /* texto */
+  --secondary: #0f1420;
+  /* base */
+  --third: #273145;
+  /* NAV + TILES + SIDEBAR + CARDS (navbar colour) */
+
+  --bgPrimary: #1b273c;
+  /* fundo geral (body) */
+  --bgSecondary: #202a3e;
+  /* superfícies secundárias (cards, modais) */
+
+  /* canvas com halos para destacar o vidro */
+  --bgCanvas:
+    radial-gradient(1200px 600px at 15% -10%, rgba(142, 160, 255, .12), transparent 60%),
+    radial-gradient(5000px 1800px at 100% 0%, rgba(79, 122, 252, 0.28), transparent 60%),
+    linear-gradient(180deg, #0f1420 0%, #141b29 100%);
+
+  --linkColor: #8ea0ff;
+
+  /* glass params */
+  --glassTint: 83, 127, 186;
+  --stroke: rgba(149, 183, 255, 0.58);
+  --shine: rgba(255, 255, 255, .82);
+
+  --boxShadow: 0 8px 20px rgba(0, 0, 0, .35);
+
+  .qprofile__pill {
+    font-weight: 500 !important;
+    color: #a7ffca !important;
+    background: color-mix(in srgb, #22c55e 30%, transparent) !important;
+    /* green tint */
+    border: 1px solid color-mix(in srgb, #22c55e 50%, transparent) !important;
+  }
+}
+
+/* =============MIXINS================*/
+
+.link() {
+  color: var(--linkColor);
+  transition-duration: 2s;
+
+  &:hover {
+    cursor: pointer;
+    opacity: 0.5;
+    transition-duration: 2s;
+  }
+}
+
+.qprofile__pill {
+    font-weight: 500 !important;
+    color: #a7ffca !important;
+    background: color-mix(in srgb, #22c55e 30%, transparent) !important;
+    /* green tint */
+    border: 1px solid color-mix(in srgb, #22c55e 50%, transparent) !important;
+  }
+
+/* superfície sólida “semantic third” */
+.surface() {
+  background: var(--third) !important;
+  border: 1px solid color-mix(in srgb, var(--third) 85%, transparent);
+  box-shadow: var(--boxShadow);
+  color: var(--primary);
+}
+
+/* glass moderno por cima do canvas (também na cor third) */
+.glass-surface() {
+  border: 1px solid color-mix(in srgb, var(--third) 85%, transparent) !important;
+  box-shadow: var(--boxShadow) !important;
+  color: var(--primary) !important;
+  background:
+    linear-gradient(135deg,
+      color-mix(in srgb, var(--third) 86%, transparent),
+      color-mix(in srgb, var(--third) 68%, transparent)),
+    linear-gradient(180deg, var(--shine) 0%, transparent 30%);
+  backdrop-filter: saturate(170%) blur(var(--blur-weak));
+  -webkit-backdrop-filter: saturate(170%) blur(var(--blur-weak));
+}
+
+/* Generic glass container */
+.glass {
+  border: 1px solid var(--glass-border);
+  background:
+    linear-gradient(135deg, var(--glass-bg-1), var(--glass-bg-2)),
+    var(--bgSecondary);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  box-shadow: 0 0 10px rgba(0,0,0,.22);
+}
+
+/* Subtle gloss overlay */
+.glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: var(--glass-gloss);
+  opacity: .6;
+}
+
+/* Glass card variant */
+.glass-card {
+  .glass();
+  border-radius: var(--radius-lg);
+}
+
+/* Glass icon */
+.glass-icon {
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.28);
+  background:
+    radial-gradient(18px circle at 28% 26%, rgba(255,255,255,.12), transparent 62%),
+    linear-gradient(135deg, rgba(255,255,255,.24), transparent 55%);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* Card base (quando não precisa blur) */
+.card() {
+  .surface();
+  border-radius: @BorderRadiusRoundest;
+  padding: 24px;
+  margin-top: 20px;
+}
+
+/* pop-in genérico */
+.animatedPop() {
+  animation: pop-in 0.5s ease forwards;
+
+  @keyframes pop-in {
+    0% {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
