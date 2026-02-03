@@ -11,7 +11,7 @@ const glassSectionStyle: React.CSSProperties = {
     boxShadow: "0 0 10px rgba(0,0,0,.22)",
     position: "relative",
     overflow: "hidden",
-    height: "100%",
+    /* height: "100%", */
 
     "--mx": "0px",
     "--my": "0px",
@@ -73,7 +73,7 @@ export const Section: React.FC<React.PropsWithChildren<{ title: string }>> = ({ 
                 className="form-grid"
                 style={{
                     display: "grid",
-                    gridTemplateColumns: "1fr 1fr",
+                    gridTemplateColumns: "1fr 0fr",
                     gap: 12,
                     position: "relative",
                     zIndex: 1,

@@ -1,0 +1,137 @@
+@import "../../../../styles/global.styles.less";
+
+.psm-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 2px 2px 10px;
+  margin-bottom: 10px;
+}
+
+.psm-tab {
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  background: transparent;
+  color: inherit;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-weight: 800;
+  white-space: nowrap;
+  opacity: 0.7;
+  flex: 0 0 auto;
+}
+
+.psm-tab.is-active {
+  opacity: 1;
+  color: var(--linkColor);
+  border-color: color-mix(in srgb, var(--linkColor) 40%, rgba(148, 163, 184, 0.25));
+}
+
+.psm-stack {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+}
+
+.psm-field {
+  display: grid;
+  gap: 6px;
+  width: 100%;
+}
+
+.psm-label {
+  font-weight: 700;
+  opacity: 0.9;
+}
+
+.psm-card {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  background: rgba(148, 163, 184, 0.08);
+}
+
+.psm-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.psm-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  opacity: 0.9;
+
+  input {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.psm-meter {
+  flex: 1 1 120px;
+  min-width: 120px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.18);
+  overflow: hidden;
+}
+
+.psm-meterFill {
+  height: 100%;
+  background: var(--linkColor);
+  border-radius: inherit;
+}
+
+.psm-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.psm-hobby {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 10px;
+  align-items: start;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  background: rgba(148, 163, 184, 0.08);
+}
+
+.psm-hobbyIcon {
+  display: grid;
+  place-items: center;
+  margin-top: 2px;
+}
+
+.psm-hobbyBody {
+  min-width: 0;
+}
+
+.psm-hobbyName {
+  font-weight: 900;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.psm-hobbyDesc {
+  opacity: 0.85;
+  margin-top: 4px;
+  overflow-wrap: anywhere;
+}
+
+.psm-hobbyActions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 6px;
+}

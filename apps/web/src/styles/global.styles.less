@@ -225,3 +225,41 @@
     }
   }
 }
+
+@media (max-width: 900px) {
+  .MuiDialog-root .MuiDialog-paper {
+    width: calc(100% - 24px) !important;
+    max-width: 560px !important;
+    margin: 12px !important;
+    overflow-x: hidden !important;
+  }
+
+  .MuiDialog-root .MuiDialogTitle-root,
+  .MuiDialog-root .MuiDialogContent-root,
+  .MuiDialog-root .MuiDialogActions-root {
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+  }
+
+  .MuiDialog-root .MuiDialogContent-root {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .MuiDialog-root .MuiDialogContent-root * {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* Common MUI offenders inside dialogs */
+  .MuiDialog-root .MuiTabs-flexContainer {
+    flex-wrap: wrap !important;
+  }
+
+  .MuiDialog-root .MuiChip-root {
+    max-width: 100% !important;
+  }
+  .MuiDialog-root .MuiChip-label {
+    white-space: normal !important;
+  }
+}

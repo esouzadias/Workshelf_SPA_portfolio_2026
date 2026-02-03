@@ -1,10 +1,11 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import "./Profile.styles.less";
+import ProfileMobile from "./ProfileMobile";
 
-import { useAuth } from "../../lib/auth.context";
-import { apiPut, apiPost, apiDelete, fetchApi } from "../../lib/api";
-import { applyTheme } from "../../lib/theme";
-import { useLanguage } from "../../lib/locale.context";
+import { useAuth } from "../../../../lib/auth.context";
+import { apiPut, apiPost, apiDelete, fetchApi } from "../../../../lib/api";
+import { applyTheme } from "../../../../lib/theme";
+import { useLanguage } from "../../../../lib/locale.context";
 
 import {
   Snackbar,
@@ -36,12 +37,12 @@ import WorkIcon from "@mui/icons-material/Work";
 import SettingsIcon from "@mui/icons-material/Settings";
 import EditIcon from "@mui/icons-material/Edit";
 
-import WorkSection from "./Components/WorkSection/WorkSection";
-import EducationSection from "./Components/EducationSection";
-import PersonalSection from "./Components/PersonalSection";
-import AccountSection from "./Components/AccountSection";
-import HobbyEditor from "./Components/HobbyEditor";
-import ProfileBasics from "./Components/ProfileBasics";
+import WorkSection from "../WorkSection/WorkSection";
+import EducationSection from "../EducationSection";
+import PersonalSection from "../PersonalSection/PersonalSection";
+import AccountSection from "../AccountSection";
+import HobbyEditor from "../HobbyEditor";
+import ProfileBasics from "../ProfileBasics";
 
 type ThemeChoice = "system" | "light" | "dark";
 type LocaleCode = "en" | "pt";
@@ -207,19 +208,19 @@ const ProfilePage: React.FC = () => {
   const [workBlocks, setWorkBlocks] = useState<WorkBlock[]>(() =>
     initial.currentCompany || initial.currentTitle || initial.currentRoleStart
       ? [
-          {
-            companyName: initial.currentCompany || "",
-            companyLogo: initial.currentCompanyLogoUrl || null,
-            title: initial.currentTitle || "",
-            start: initial.currentRoleStart || "",
-            end: "",
-            isCurrent: true,
-            isConsultancy: Boolean(initial.currentClient),
-            clients: initial.currentClient
-              ? [{ name: initial.currentClient, logo: initial.currentClientLogoUrl || null }]
-              : [],
-          },
-        ]
+        {
+          companyName: initial.currentCompany || "",
+          companyLogo: initial.currentCompanyLogoUrl || null,
+          title: initial.currentTitle || "",
+          start: initial.currentRoleStart || "",
+          end: "",
+          isCurrent: true,
+          isConsultancy: Boolean(initial.currentClient),
+          clients: initial.currentClient
+            ? [{ name: initial.currentClient, logo: initial.currentClientLogoUrl || null }]
+            : [],
+        },
+      ]
       : []
   );
 
@@ -304,27 +305,43 @@ const ProfilePage: React.FC = () => {
 
   const initialSnapRef = useRef<ProfileForm>(makeFormSnapshot());
 
+  const useIsMobileWidth = (maxWidth: number) => {
+    const [isMobile, setIsMobile] = useState(() => {
+      if (typeof window === "undefined") return false;
+      return window.innerWidth < maxWidth;
+    });
+
+    useEffect(() => {
+      const onResize = () => setIsMobile(window.innerWidth < maxWidth);
+      onResize();
+      window.addEventListener("resize", onResize, { passive: true });
+      return () => window.removeEventListener("resize", onResize);
+    }, [maxWidth]);
+
+    return isMobile;
+  };
+
   useEffect(() => {
-    fetchApi("/users/profile-options").then(setProfileEnums).catch(() => {});
+    fetchApi("/users/profile-options").then(setProfileEnums).catch(() => { });
   }, []);
 
   useEffect(() => {
     const nextWorkBlocks =
       initial.currentCompany || initial.currentTitle || initial.currentRoleStart
         ? [
-            {
-              companyName: initial.currentCompany || "",
-              companyLogo: initial.currentCompanyLogoUrl || null,
-              title: initial.currentTitle || "",
-              start: initial.currentRoleStart || "",
-              end: "",
-              isCurrent: true,
-              isConsultancy: Boolean(initial.currentClient),
-              clients: initial.currentClient
-                ? [{ name: initial.currentClient, logo: initial.currentClientLogoUrl || null }]
-                : [],
-            } as WorkBlock,
-          ]
+          {
+            companyName: initial.currentCompany || "",
+            companyLogo: initial.currentCompanyLogoUrl || null,
+            title: initial.currentTitle || "",
+            start: initial.currentRoleStart || "",
+            end: "",
+            isCurrent: true,
+            isConsultancy: Boolean(initial.currentClient),
+            clients: initial.currentClient
+              ? [{ name: initial.currentClient, logo: initial.currentClientLogoUrl || null }]
+              : [],
+          } as WorkBlock,
+        ]
         : ([] as WorkBlock[]);
 
     setDisplayName(initial.displayName);
@@ -391,7 +408,7 @@ const ProfilePage: React.FC = () => {
           setHobbies(list);
           setBaselineHobbies(list);
         })
-        .catch(() => {});
+        .catch(() => { });
     }
     return () => {
       alive = false;
@@ -406,6 +423,7 @@ const ProfilePage: React.FC = () => {
   const registerBeforeSave = (fn: () => Promise<void>) => {
     if (!beforeSaveHooks.current.includes(fn)) beforeSaveHooks.current.push(fn);
   };
+  const isMobile = useIsMobileWidth(900);
 
   const resizeImageToDataUrl = (file: File, maxSize = 256, quality = 0.8): Promise<string> =>
     new Promise((resolve, reject) => {
@@ -469,19 +487,19 @@ const ProfilePage: React.FC = () => {
     const nextWorkBlocks =
       initial.currentCompany || initial.currentTitle || initial.currentRoleStart
         ? [
-            {
-              companyName: initial.currentCompany || "",
-              companyLogo: initial.currentCompanyLogoUrl || null,
-              title: initial.currentTitle || "",
-              start: initial.currentRoleStart || "",
-              end: "",
-              isCurrent: true,
-              isConsultancy: Boolean(initial.currentClient),
-              clients: initial.currentClient
-                ? [{ name: initial.currentClient, logo: initial.currentClientLogoUrl || null }]
-                : [],
-            } as WorkBlock,
-          ]
+          {
+            companyName: initial.currentCompany || "",
+            companyLogo: initial.currentCompanyLogoUrl || null,
+            title: initial.currentTitle || "",
+            start: initial.currentRoleStart || "",
+            end: "",
+            isCurrent: true,
+            isConsultancy: Boolean(initial.currentClient),
+            clients: initial.currentClient
+              ? [{ name: initial.currentClient, logo: initial.currentClientLogoUrl || null }]
+              : [],
+          } as WorkBlock,
+        ]
         : ([] as WorkBlock[]);
 
     setDisplayName(initial.displayName);
@@ -634,9 +652,9 @@ const ProfilePage: React.FC = () => {
       </div>
     );
   }
-
+  if (isMobile) return <ProfileMobile />;
   return (
-    <main style={{width: "100%"}}>
+    <main style={{ width: "100%" }}>
       <div className="container">
         <form className="card form-grid" onSubmit={onSubmit} style={{ display: "grid", gap: 12 }}>
           <Box sx={{ borderBottom: 1, borderColor: "divider", mb: 1 }}>

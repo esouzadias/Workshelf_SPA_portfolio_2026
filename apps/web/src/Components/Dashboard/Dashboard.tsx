@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import "./Dashboard.styles.less";
-import { Box } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 
 import Sidebar from "../Sidebar/Sidebar";
 import Tile from "../Tile/Tile";
@@ -16,6 +16,7 @@ import DashboardProfessionalExperience from "./QuickTileModals/DashboardProfessi
 import DashboardReviews from "./QuickTileModals/DashboardReview/DashboardReviews";
 import DashboardPortfolio from "./Portfolio/DashboardPortfolio";
 import DashboardContacts from "./Contacts/DashboardContacts";
+import DashboardMobile from "././DashboardMobile";
 
 /* ---------- Types ---------- */
 
@@ -36,6 +37,8 @@ type DashboardProps = {
 };
 
 const Dashboard: React.FC<DashboardProps> = ({ userInfo, tabs, tilesByTab }) => {
+  const isMobile = useMediaQuery("(max-width: 900px)");
+
   const [tab, setTab] = useState<string>(tabs[0]?.key || "overview");
   const tiles = tilesByTab[tab] || [];
   const { activeLanguage } = useLanguage();
@@ -48,7 +51,6 @@ const Dashboard: React.FC<DashboardProps> = ({ userInfo, tabs, tilesByTab }) => 
       .then((data: any) => setMe(data))
       .catch(() => { });
   }, []);
-
 
   const pickKey = useMemo(
     () => (v: unknown): string =>
@@ -79,18 +81,19 @@ const Dashboard: React.FC<DashboardProps> = ({ userInfo, tabs, tilesByTab }) => 
 
   const sidebarItems = useMemo(
     () =>
-      tabs.map(t => ({
+      tabs.map((t) => ({
         value: t.key,
         label: tDict(t.label),
-        icon: t.icon && ICON_MAP[t.icon]
-          ? React.createElement(ICON_MAP[t.icon], { fontSize: "small" })
-          : undefined,
-      })),
+        icon:
+          t.icon && ICON_MAP[t.icon]
+            ? React.createElement(ICON_MAP[t.icon], { fontSize: "small" })
+            : undefined,
+      })) as { value: string; label: string; icon?: React.ReactElement }[],
     [tabs, tDict]
   );
 
   const renderModal = (modal: any) => {
-    const t = tiles.find(tile => pickKey(tile.category) === modal);
+    const t = tiles.find((tile) => pickKey(tile.category) === modal);
     if (!t) return "null";
     const handleClose = () => setOpenModal(false);
     setOpenModal(true);
@@ -103,33 +106,67 @@ const Dashboard: React.FC<DashboardProps> = ({ userInfo, tabs, tilesByTab }) => 
               open={true}
               onClose={handleClose}
               title={tDict(pickKey(t.category))}
-              profile={(me as any)?.profile ?? {}} />
+              profile={(me as any)?.profile ?? {}}
+            />
           ) : modal === "latestCertificates" ? (
-            <DashboardCertifications
-            />
+            <DashboardCertifications />
           ) : modal === "highlights" ? (
-            <DashboardHighlights
-            />
+            <DashboardHighlights />
           ) : modal === "topSkills" ? (
-            <DashboardTopSkills
-            />
+            <DashboardTopSkills />
           ) : modal === "professionalExperience" ? (
-            <DashboardProfessionalExperience
-            />
-          ) : modal == "latestReviews" ? (
+            <DashboardProfessionalExperience />
+          ) : modal === "latestReviews" ? (
             <DashboardReviews />
           ) : (
             <div></div>
           )
         }
-        title={[t.icon ? <img src={t.icon} style={{ height: 30, verticalAlign: "middle" }} alt="topSkillsIcon" /> : null, tDict(pickKey(t.category))]}
+        title={[
+          t.icon ? (
+            <img src={t.icon} style={{ height: 30, verticalAlign: "middle" }} alt="topSkillsIcon" />
+          ) : null,
+          tDict(pickKey(t.category)),
+        ]}
         open={true}
         onClose={handleClose}
       />
-
     );
-
   };
+
+  const renderMainContent = () => {
+    if (tab === "portfolio") return <DashboardPortfolio />;
+    if (tab === "contacts") return <DashboardContacts />;
+
+    return (
+      <Box className="tile-grid">
+        {tiles.map((t, i) => (
+          <Tile
+            key={`${tab}-${i}`}
+            title={tDict(pickKey(t.category))}
+            subtitle={tDescription(t.description)}
+            icon={t.icon}
+            onClick={() => renderModal(pickKey(t.category))}
+          />
+        ))}
+      </Box>
+    );
+  };
+
+  if (isMobile) {
+    return (
+      <>
+        <DashboardMobile
+          userInfo={userInfo}
+          items={sidebarItems}
+          tab={tab}
+          setTab={setTab}
+          renderContent={renderMainContent}
+        />
+        {openModal && currentModal && <div>{currentModal}</div>}
+      </>
+    );
+  }
 
   return (
     <main id="dashboard">
@@ -144,27 +181,9 @@ const Dashboard: React.FC<DashboardProps> = ({ userInfo, tabs, tilesByTab }) => 
         />
       </section>
 
-      <section className="dash-content fade-slide">
-        {tab === "portfolio" ? (
-          <DashboardPortfolio />
-        ) : tab === "contacts" ? <DashboardContacts /> : (
-          <Box className="tile-grid">
-            {tiles.map((t, i) => (
-              <Tile
-                key={`${tab}-${i}`}
-                title={tDict(pickKey(t.category))}
-                subtitle={tDescription(t.description)}
-                icon={t.icon}
-                onClick={() => renderModal(pickKey(t.category))}
-              />
-            ))}
-          </Box>
-        )}
-      </section>
+      <section className="dash-content fade-slide">{renderMainContent()}</section>
 
-      {openModal && currentModal && (
-        <div>{currentModal}</div>
-      )}
+      {openModal && currentModal && <div>{currentModal}</div>}
     </main>
   );
 };

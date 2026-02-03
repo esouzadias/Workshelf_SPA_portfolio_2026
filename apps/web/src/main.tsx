@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./app/App";
 import HomePage from "./pages/Home";
 import AuthPage from "./pages/Auth";
-import ProfilePage from "./pages/Profile/Profile";
+import ProfilePage from "./pages/Profile/Components/Profile/Profile";
 import "./styles/index.less";
 import { AuthProvider } from "./lib/auth.context";
 import { LocaleProvider } from "./lib/locale.context";
